@@ -1,0 +1,261 @@
+   Compiling codeconvert v0.1.0 (/Users/rstout/Dev/scratch/codeconvert)
+error[E0412]: cannot find type `Receiver` in this scope
+   --> src/main.rs:120:30
+    |
+120 |     pub fn updates(&self) -> Receiver<Box<dyn std::any::Any>> {
+    |                              ^^^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+1   + use crate::mpsc::Receiver;
+    |
+1   + use std::sync::mpsc::Receiver;
+    |
+1   + use tokio::net::unix::pipe::Receiver;
+    |
+1   + use tokio::sync::broadcast::Receiver;
+    |
+      and 3 other candidates
+
+warning: unused import: `tokio::sync::Mutex`
+ --> src/main.rs:6:5
+  |
+6 | use tokio::sync::Mutex;
+  |     ^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `tokio::task`
+ --> src/main.rs:8:5
+  |
+8 | use tokio::task;
+  |     ^^^^^^^^^^^
+
+error[E0277]: `dyn Logger` cannot be shared between threads safely
+   --> src/main.rs:66:23
+    |
+66  |           thread::spawn(move || {
+    |  _________-------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+67  | |             log.debugw("poller started");
+68  | |             let initial_fetch = Self::execute_fetch(&source, fetch_timeout);
+69  | |             match initial_fetch {
+...   |
+101 | |             }
+102 | |         });
+    | |_________^ `dyn Logger` cannot be shared between threads safely
+    |
+    = help: the trait `Sync` is not implemented for `dyn Logger`, which is required by `{closure@src/main.rs:66:23: 66:30}: Send`
+    = note: required for `Arc<dyn Logger>` to implement `Send`
+note: required because it's used within this closure
+   --> src/main.rs:66:23
+    |
+66  |         thread::spawn(move || {
+    |                       ^^^^^^^
+note: required by a bound in `std::thread::spawn`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/std/src/thread/mod.rs:692:1
+
+error[E0277]: `dyn Logger` cannot be sent between threads safely
+   --> src/main.rs:66:23
+    |
+66  |           thread::spawn(move || {
+    |  _________-------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+67  | |             log.debugw("poller started");
+68  | |             let initial_fetch = Self::execute_fetch(&source, fetch_timeout);
+69  | |             match initial_fetch {
+...   |
+101 | |             }
+102 | |         });
+    | |_________^ `dyn Logger` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `dyn Logger`, which is required by `{closure@src/main.rs:66:23: 66:30}: Send`
+    = note: required for `Arc<dyn Logger>` to implement `Send`
+note: required because it's used within this closure
+   --> src/main.rs:66:23
+    |
+66  |         thread::spawn(move || {
+    |                       ^^^^^^^
+note: required by a bound in `std::thread::spawn`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/std/src/thread/mod.rs:692:1
+
+error[E0277]: `dyn Source` cannot be shared between threads safely
+   --> src/main.rs:66:23
+    |
+66  |           thread::spawn(move || {
+    |  _________-------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+67  | |             log.debugw("poller started");
+68  | |             let initial_fetch = Self::execute_fetch(&source, fetch_timeout);
+69  | |             match initial_fetch {
+...   |
+101 | |             }
+102 | |         });
+    | |_________^ `dyn Source` cannot be shared between threads safely
+    |
+    = help: the trait `Sync` is not implemented for `dyn Source`, which is required by `{closure@src/main.rs:66:23: 66:30}: Send`
+    = note: required for `Arc<dyn Source>` to implement `Send`
+note: required because it's used within this closure
+   --> src/main.rs:66:23
+    |
+66  |         thread::spawn(move || {
+    |                       ^^^^^^^
+note: required by a bound in `std::thread::spawn`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/std/src/thread/mod.rs:692:1
+
+error[E0277]: `dyn Source` cannot be sent between threads safely
+   --> src/main.rs:66:23
+    |
+66  |           thread::spawn(move || {
+    |  _________-------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+67  | |             log.debugw("poller started");
+68  | |             let initial_fetch = Self::execute_fetch(&source, fetch_timeout);
+69  | |             match initial_fetch {
+...   |
+101 | |             }
+102 | |         });
+    | |_________^ `dyn Source` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `dyn Source`, which is required by `{closure@src/main.rs:66:23: 66:30}: Send`
+    = note: required for `Arc<dyn Source>` to implement `Send`
+note: required because it's used within this closure
+   --> src/main.rs:66:23
+    |
+66  |         thread::spawn(move || {
+    |                       ^^^^^^^
+note: required by a bound in `std::thread::spawn`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/std/src/thread/mod.rs:692:1
+
+error[E0277]: `(dyn Any + 'static)` cannot be sent between threads safely
+   --> src/main.rs:66:23
+    |
+66  |           thread::spawn(move || {
+    |  _________-------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+67  | |             log.debugw("poller started");
+68  | |             let initial_fetch = Self::execute_fetch(&source, fetch_timeout);
+69  | |             match initial_fetch {
+...   |
+101 | |             }
+102 | |         });
+    | |_________^ `(dyn Any + 'static)` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `(dyn Any + 'static)`, which is required by `{closure@src/main.rs:66:23: 66:30}: Send`
+    = note: required for `Unique<(dyn Any + 'static)>` to implement `Send`
+note: required because it appears within the type `Box<(dyn Any + 'static)>`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/alloc/src/boxed.rs:237:12
+    = note: required for `std::sync::mpsc::Sender<Box<(dyn Any + 'static)>>` to implement `Send`
+note: required because it's used within this closure
+   --> src/main.rs:66:23
+    |
+66  |         thread::spawn(move || {
+    |                       ^^^^^^^
+note: required by a bound in `std::thread::spawn`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/std/src/thread/mod.rs:692:1
+
+error[E0308]: mismatched types
+   --> src/main.rs:110:26
+    |
+110 |             source.fetch(&ctx).await
+    |                    ----- ^^^^ expected `tokio::time::Instant`, found `std::time::Instant`
+    |                    |
+    |                    arguments to this method are incorrect
+    |
+    = note: `std::time::Instant` and `tokio::time::Instant` have similar names, but are actually distinct types
+note: `std::time::Instant` is defined in crate `std`
+   --> /rustc/3f5fd8dd41153bc5fdca9427e9e05be2c767ba23/library/std/src/time.rs:156:1
+note: `tokio::time::Instant` is defined in crate `tokio`
+   --> /Users/rstout/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.39.3/src/time/instant.rs:34:1
+    |
+34  | pub struct Instant {
+    | ^^^^^^^^^^^^^^^^^^
+note: method defined here
+   --> src/main.rs:28:8
+    |
+28  |     fn fetch(&self, ctx: &tokio::time::Instant) -> Result<Box<dyn std::any::Any>, Box<dyn Error>>;
+    |        ^^^^^
+
+error[E0277]: `Result<Box<dyn Any>, Box<dyn std::error::Error>>` is not a future
+   --> src/main.rs:110:32
+    |
+110 |             source.fetch(&ctx).await
+    |                               -^^^^^
+    |                               ||
+    |                               |`Result<Box<dyn Any>, Box<dyn std::error::Error>>` is not a future
+    |                               help: remove the `.await`
+    |
+    = help: the trait `Future` is not implemented for `Result<Box<dyn Any>, Box<dyn std::error::Error>>`, which is required by `Result<Box<dyn Any>, Box<dyn std::error::Error>>: IntoFuture`
+    = note: Result<Box<dyn Any>, Box<dyn std::error::Error>> must be a future or must implement `IntoFuture` to be awaited
+    = note: required for `Result<Box<dyn Any>, Box<dyn std::error::Error>>` to implement `IntoFuture`
+
+error[E0308]: mismatched types
+   --> src/main.rs:114:13
+    |
+109 |           let result = timeout(fetch_timeout, async {
+    |  _____________________________________________-
+110 | |             source.fetch(&ctx).await
+111 | |         });
+    | |_________- the expected `async` block
+112 |
+113 |           match result {
+    |                 ------ this expression has type `tokio::time::Timeout<{async block@src/main.rs:109:45: 111:10}>`
+114 |               Ok(Ok(data)) => Ok(data),
+    |               ^^^^^^^^^^^^ expected `Timeout<{async block@src/main.rs:109:45: 111:10}>`, found `Result<_, _>`
+    |
+    = note: expected struct `tokio::time::Timeout<{async block@src/main.rs:109:45: 111:10}>`
+                 found enum `Result<_, _>`
+
+error[E0308]: mismatched types
+   --> src/main.rs:115:13
+    |
+109 |           let result = timeout(fetch_timeout, async {
+    |  _____________________________________________-
+110 | |             source.fetch(&ctx).await
+111 | |         });
+    | |_________- the expected `async` block
+112 |
+113 |           match result {
+    |                 ------ this expression has type `tokio::time::Timeout<{async block@src/main.rs:109:45: 111:10}>`
+114 |               Ok(Ok(data)) => Ok(data),
+115 |               Ok(Err(err)) => Err(err),
+    |               ^^^^^^^^^^^^ expected `Timeout<{async block@src/main.rs:109:45: 111:10}>`, found `Result<_, _>`
+    |
+    = note: expected struct `tokio::time::Timeout<{async block@src/main.rs:109:45: 111:10}>`
+                 found enum `Result<_, _>`
+
+error[E0308]: mismatched types
+   --> src/main.rs:116:13
+    |
+109 |           let result = timeout(fetch_timeout, async {
+    |  _____________________________________________-
+110 | |             source.fetch(&ctx).await
+111 | |         });
+    | |_________- the expected `async` block
+112 |
+113 |           match result {
+    |                 ------ this expression has type `tokio::time::Timeout<{async block@src/main.rs:109:45: 111:10}>`
+...
+116 |               Err(_) => Err(Box::new(ErrNoUpdate)),
+    |               ^^^^^^ expected `Timeout<{async block@src/main.rs:109:45: 111:10}>`, found `Result<_, _>`
+    |
+    = note: expected struct `tokio::time::Timeout<{async block@src/main.rs:109:45: 111:10}>`
+                 found enum `Result<_, _>`
+
+warning: unused variable: `buffer_capacity`
+  --> src/main.rs:47:9
+   |
+47 |         buffer_capacity: usize,
+   |         ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_buffer_capacity`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+Some errors have detailed explanations: E0277, E0308, E0412.
+For more information about an error, try `rustc --explain E0277`.
+warning: `codeconvert` (bin "codeconvert") generated 3 warnings
+error: could not compile `codeconvert` (bin "codeconvert") due to 11 previous errors; 3 warnings emitted
